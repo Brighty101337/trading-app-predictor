@@ -1,0 +1,20 @@
+from datetime import datetime
+
+
+def generate_sample_prices():
+    base = 100.0
+    points = []
+    for i in range(30):
+        base += (0.9 if i % 4 else -0.7) + (0.4 if i > 15 else 0)
+        points.append(round(base, 2))
+    return points
+
+
+if __name__ == '__main__':
+    prices = generate_sample_prices()
+    with open('data/sample_prices.csv', 'w', newline='') as file:
+        file.write('Date,Close\n')
+        for index, price in enumerate(prices):
+            date = (datetime(2024, 1, 1)).strftime('%Y-%m-%d')
+            file.write(f"{date}, {price}\n")
+    print('Sample data generated.')

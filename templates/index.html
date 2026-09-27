@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TJR Simpson Trade Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Hybrid Trading Strategy</p>
+          <h1>TJR + Simpson Trade Predictor</h1>
+        </div>
+      </header>
+
+      <section class="panel controls">
+        <h2>Upload market data</h2>
+        <form id="upload-form" enctype="multipart/form-data">
+          <label for="csv-file">CSV file with Close prices</label>
+          <input id="csv-file" type="file" name="file" accept=".csv" />
+          <button type="submit">Analyze</button>
+        </form>
+      </section>
+
+      <section class="panel metrics" id="metrics-panel">
+        <div class="metric-card accent">
+          <span>Signal</span>
+          <strong id="final-signal">{{ analysis.final_signal }}</strong>
+        </div>
+        <div class="metric-card">
+          <span>Confidence</span>
+          <strong id="confidence">{{ analysis.confidence }}</strong>
+        </div>
+        <div class="metric-card">
+          <span>Current Price</span>
+          <strong id="current-price">{{ analysis.current_price }}</strong>
+        </div>
+        <div class="metric-card">
+          <span>Change %</span>
+          <strong id="change-percent">{{ analysis.change_percent }}%</strong>
+        </div>
+      </section>
+
+      <section class="panel summary-grid">
+        <div>
+          <h3>Strategy Summary</h3>
+          <ul>
+            <li><strong>TJR Signal:</strong> <span id="tjr-signal">{{ analysis.tjr_signal }}</span></li>
+            <li><strong>Simpson Signal:</strong> <span id="simpson-signal">{{ analysis.simpson_signal }}</span></li>
+            <li><strong>Trend Strength:</strong> <span id="trend-strength">{{ analysis.trend_strength }}</span></li>
+            <li><strong>Risk Level:</strong> <span id="risk-level">{{ analysis.risk_level }}</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Trade Targets</h3>
+          <ul>
+            <li><strong>Stop Loss:</strong> <span id="stop-loss">{{ analysis.stop_loss }}</span></li>
+            <li><strong>Take Profit:</strong> <span id="take-profit">{{ analysis.take_profit }}</span></li>
+            <li><strong>Simpson Area:</strong> <span id="simpson-area">{{ analysis.simpson_area }}</span></li>
+            <li><strong>Processed Points:</strong> <span id="processed-points">{{ analysis.processed_points }}</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3>Price Trend</h3>
+        <canvas id="trend-canvas" width="900" height="320"></canvas>
+      </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script>
+      const defaultPrices = {{ analysis.prices | tojson }};
+      drawTrendChart(defaultPrices);
+    </script>
+  </body>
+</html>
